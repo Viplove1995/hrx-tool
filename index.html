@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRxNotes</title>
+    <style>
+
+@font-face {
+    font-family: 'AmazonEmber';
+    src: url('amazon-ember-display.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+    font-family: 'AmazonEmber', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #0066aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            letter-spacing: 2px;
+        }
+        
+        .clocks-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .clock-card {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
+        }
+        
+        .clock-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 255, 0.6);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        .clock-country {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #00d4ff;
+        }
+        
+        .clock-time {
+    font-family: 'AmazonEmber', sans-serif;
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+        
+        .input-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .input-card {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .input-card:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #00d4ff;
+            font-size: 0.9rem;
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
+        }
+        
+        select option {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .button-section {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #19cb94;
+            color: #fff;
+            border: 2px solid #19cb94;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary.clicked {
+            background: #ef6973;
+            border-color: #ef6973;
+        }
+        
+        .output-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .output-card {
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .output-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        
+        .copy-btn {
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 6px;
+            color: #00d4ff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .output-content {
+    font-family: 'AmazonEmber', sans-serif;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            color: #ffffff;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            word-break: break-all;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .error {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .clocks-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .output-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>HRxNotes</h1>
+        </div>
+        
+        <div class="clocks-section">
+            <div class="clock-card">
+                <div class="clock-country"><img src="https://flagcdn.com/gb.svg" width="20" style="vertical-align:middle; margin-right:8px;">UK</div>
+                <div class="clock-time" id="uk-time">--:--:--</div>
+            </div>
+            <div class="clock-card">
+                <div class="clock-country"><img src="https://flagcdn.com/ie.svg" width="20" style="vertical-align:middle; margin-right:8px;">IRL</div>
+                <div class="clock-time" id="irl-time">--:--:--</div>
+            </div>
+            <div class="clock-card">
+                <div class="clock-country"><img src="https://flagcdn.com/za.svg" width="20" style="vertical-align:middle; margin-right:8px;">ZAF</div>
+                <div class="clock-time" id="zaf-time">--:--:--</div>
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <div class="input-card">
+                <div class="input-group">
+                    <label for="country">Country</label>
+                    <select id="country">
+                        <option value="">Select Country</option>
+                        <option value="UK">UK</option>
+                        <option value="IRL">IRL</option>
+                        <option value="ZAF">ZAF</option>
+                    </select>
+                    <div class="error" id="country-error"></div>
+                </div>
+            </div>
+            
+            <div class="input-card">
+                <div class="input-group">
+                    <label for="reason">Reason</label>
+                    <input type="text" id="reason" placeholder="E.g., Billing Query, Tech Support">
+                </div>
+            </div>
+            
+            <div class="input-card">
+                <div class="input-group">
+                    <label for="case-number">Case Number</label>
+                    <input type="text" id="case-number" placeholder="Enter Case #">
+                    <div class="error" id="case-error"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-section">
+            <button class="btn btn-secondary" id="capture-time">Capture Current Time</button>
+            <button class="btn btn-primary" id="generate-note">Generate Note</button>
+        </div>
+        
+        <div class="output-section">
+            <div class="output-card">
+                <div class="output-header">
+                    <div class="output-title">Timecard Format</div>
+                    <button class="copy-btn" id="copy-timecard">Copy</button>
+                </div>
+                <div class="output-content" id="timecard-output">
+                    Generated timecard format will appear here...
+                </div>
+            </div>
+            
+            <div class="output-card">
+                <div class="output-header">
+                    <div class="output-title">Vibe Format</div>
+                    <button class="copy-btn" id="copy-vibe">Copy</button>
+                </div>
+                <div class="output-content" id="vibe-output">
+                    Generated vibe format will appear here...
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast"></div>
+    
+    <script>
+        // Timezone mappings
+        const timezones = {
+            UK: 'Europe/London',
+            IRL: 'Europe/Dublin', 
+            ZAF: 'Africa/Johannesburg'
+        };
+        
+        let capturedTime = '';
+        
+        // Update clocks
+        function updateClocks() {
+            const now = new Date();
+            
+            // UK Time
+            const ukTime = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/London',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('uk-time').textContent = ukTime;
+            
+            // Ireland Time
+            const irlTime = new Intl.DateTimeFormat('en-IE', {
+                timeZone: 'Europe/Dublin',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('irl-time').textContent = irlTime;
+            
+            // South Africa Time
+            const zafTime = new Intl.DateTimeFormat('en-ZA', {
+                timeZone: 'Africa/Johannesburg',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+            document.getElementById('zaf-time').textContent = zafTime;
+        }
+        
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Clear errors
+        function clearErrors() {
+            document.getElementById('country-error').textContent = '';
+            document.getElementById('case-error').textContent = '';
+        }
+        
+        // Validate inputs
+        function validateInputs() {
+            clearErrors();
+            let isValid = true;
+            
+            const country = document.getElementById('country').value;
+            const caseNumber = document.getElementById('case-number').value.trim();
+            
+            if (!country) {
+                document.getElementById('country-error').textContent = 'Please select a country';
+                isValid = false;
+            }
+            
+            if (!caseNumber) {
+                document.getElementById('case-error').textContent = 'Please enter a case number';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Capture current time for selected country
+        function captureCurrentTime() {
+            const country = document.getElementById('country').value;
+            if (!country) {
+                showToast('Please select a country first');
+                return;
+            }
+            
+            const now = new Date();
+            const timezone = timezones[country];
+            
+            const timeFormatter = new Intl.DateTimeFormat('en-GB', {
+                timeZone: timezone,
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            
+            const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+                timeZone: timezone,
+                day: '2-digit',
+                month: '2-digit'
+            });
+            
+            const time = timeFormatter.format(now);
+            const date = dateFormatter.format(now);
+            
+            capturedTime = `${time}, ${date}`;
+            showToast(`Time captured: ${capturedTime}`);
+            
+            // Change button color for 5 seconds
+            const captureBtn = document.getElementById('capture-time');
+            captureBtn.classList.add('clicked');
+            setTimeout(() => {
+                captureBtn.classList.remove('clicked');
+            }, 5000);
+        }
+        
+        // Generate notes
+        function generateNote() {
+            if (!validateInputs()) {
+                return;
+            }
+            
+            const country = document.getElementById('country').value;
+            const reason = document.getElementById('reason').value.trim();
+            const caseNumber = document.getElementById('case-number').value.trim();
+            
+            // Use captured time or current time
+            let timeToUse = capturedTime;
+            if (!timeToUse) {
+                const now = new Date();
+                const timezone = timezones[country];
+                
+                const timeFormatter = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: timezone,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+                
+                const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: timezone,
+                    day: '2-digit',
+                    month: '2-digit'
+                });
+                
+                const time = timeFormatter.format(now);
+                const date = dateFormatter.format(now);
+                timeToUse = `${time}, ${date}`;
+            }
+            
+            // Generate timecard format
+            const timecardFormat = `MHLS Call, ${timeToUse}, ${reason || 'No reason specified'}, ${caseNumber}`;
+            document.getElementById('timecard-output').textContent = timecardFormat;
+            
+            // Generate vibe format
+            const vibeFormat = `MHLS Call : ${caseNumber}`;
+            document.getElementById('vibe-output').textContent = vibeFormat;
+            
+            showToast('Notes generated successfully!');
+        }
+        
+        // Copy to clipboard
+        async function copyToClipboard(text, format) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(`${format} format copied to clipboard!`);
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast(`${format} format copied to clipboard!`);
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('capture-time').addEventListener('click', captureCurrentTime);
+        document.getElementById('generate-note').addEventListener('click', generateNote);
+        
+        document.getElementById('copy-timecard').addEventListener('click', () => {
+            const text = document.getElementById('timecard-output').textContent;
+            if (text && text !== 'Generated timecard format will appear here...') {
+                copyToClipboard(text, 'Timecard');
+            } else {
+                showToast('No timecard format to copy');
+            }
+        });
+        
+        document.getElementById('copy-vibe').addEventListener('click', () => {
+            const text = document.getElementById('vibe-output').textContent;
+            if (text && text !== 'Generated vibe format will appear here...') {
+                copyToClipboard(text, 'Vibe');
+            } else {
+                showToast('No vibe format to copy');
+            }
+        });
+        
+        // Clear captured time when country changes
+        document.getElementById('country').addEventListener('change', () => {
+            capturedTime = '';
+            clearErrors();
+        });
+        
+        // Clear case error when typing
+        document.getElementById('case-number').addEventListener('input', () => {
+            document.getElementById('case-error').textContent = '';
+        });
+        
+        // Initialize clocks and update every second
+        updateClocks();
+        setInterval(updateClocks, 1000);
+        
+        // Add keyboard shortcut for generate (Ctrl+Enter)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generateNote();
+            }
+        });
+    </script>
+</body>
+</html>
