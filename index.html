@@ -5,17 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HRxNotes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <style>
-
-@font-face {
-    font-family: 'AmazonEmber';
-    src: url('amazon-ember-display.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
@@ -23,10 +16,9 @@
         }
         
         body {
-    font-family: 'AmazonEmber', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
             color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             padding: 20px;
         }
@@ -42,7 +34,7 @@
         }
         
         .header h1 {
-            font-family: 'Orbitron', monospace;
+            font-family: 'Open Sans', sans-serif;
             font-size: 3.5rem;
             font-weight: 900;
             background: linear-gradient(45deg, #00d4ff, #0099cc, #0066aa);
@@ -85,8 +77,7 @@
         }
         
         .clock-time {
-    font-family: 'AmazonEmber', sans-serif;
-            font-family: 'Orbitron', monospace;
+            font-family: 'Open Sans', sans-serif;
             font-size: 2rem;
             font-weight: 700;
             color: #ffffff;
@@ -138,6 +129,7 @@
             border-radius: 8px;
             color: #ffffff;
             font-size: 1rem;
+            font-weight: 700;
             transition: all 0.3s ease;
         }
         
@@ -150,6 +142,7 @@
         select option {
             background: #1a1a1a;
             color: #ffffff;
+            font-weight: 700;
         }
         
         .button-section {
@@ -211,6 +204,13 @@
             border-radius: 15px;
             padding: 25px;
             backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+        }
+        
+        .output-card.copied {
+            background: rgba(25, 203, 148, 0.2);
+            border-color: rgba(25, 203, 148, 0.6);
+            box-shadow: 0 0 20px rgba(25, 203, 148, 0.3);
         }
         
         .output-header {
@@ -243,12 +243,11 @@
         }
         
         .output-content {
-    font-family: 'AmazonEmber', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(0, 212, 255, 0.2);
             border-radius: 8px;
             padding: 20px;
-            font-family: 'Orbitron', monospace;
             font-size: 1.1rem;
             color: #ffffff;
             min-height: 60px;
@@ -366,7 +365,7 @@
         </div>
         
         <div class="output-section">
-            <div class="output-card">
+            <div class="output-card" id="timecard-card">
                 <div class="output-header">
                     <div class="output-title">Timecard Format</div>
                     <button class="copy-btn" id="copy-timecard">Copy</button>
@@ -376,7 +375,7 @@
                 </div>
             </div>
             
-            <div class="output-card">
+            <div class="output-card" id="vibe-card">
                 <div class="output-header">
                     <div class="output-title">Vibe Format</div>
                     <button class="copy-btn" id="copy-vibe">Copy</button>
@@ -555,10 +554,28 @@
             showToast('Notes generated successfully!');
         }
         
-        // Copy to clipboard
-        async function copyToClipboard(text, format) {
+        // Copy to clipboard with enhanced visual feedback
+        async function copyToClipboard(text, format, cardId, buttonId) {
             try {
                 await navigator.clipboard.writeText(text);
+                
+                // Show visual feedback on card
+                const card = document.getElementById(cardId);
+                const button = document.getElementById(buttonId);
+                const originalText = button.textContent;
+                
+                // Add green effect to card
+                card.classList.add('copied');
+                
+                // Add tick to button
+                button.textContent = 'Copy ✓';
+                
+                // Reset after 5 seconds
+                setTimeout(() => {
+                    card.classList.remove('copied');
+                    button.textContent = originalText;
+                }, 5000);
+                
                 showToast(`${format} format copied to clipboard!`);
             } catch (err) {
                 // Fallback for older browsers
@@ -568,6 +585,24 @@
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
+                
+                // Show visual feedback on card
+                const card = document.getElementById(cardId);
+                const button = document.getElementById(buttonId);
+                const originalText = button.textContent;
+                
+                // Add green effect to card
+                card.classList.add('copied');
+                
+                // Add tick to button
+                button.textContent = 'Copy ✓';
+                
+                // Reset after 5 seconds
+                setTimeout(() => {
+                    card.classList.remove('copied');
+                    button.textContent = originalText;
+                }, 5000);
+                
                 showToast(`${format} format copied to clipboard!`);
             }
         }
@@ -579,7 +614,7 @@
         document.getElementById('copy-timecard').addEventListener('click', () => {
             const text = document.getElementById('timecard-output').textContent;
             if (text && text !== 'Generated timecard format will appear here...') {
-                copyToClipboard(text, 'Timecard');
+                copyToClipboard(text, 'Timecard', 'timecard-card', 'copy-timecard');
             } else {
                 showToast('No timecard format to copy');
             }
@@ -588,7 +623,7 @@
         document.getElementById('copy-vibe').addEventListener('click', () => {
             const text = document.getElementById('vibe-output').textContent;
             if (text && text !== 'Generated vibe format will appear here...') {
-                copyToClipboard(text, 'Vibe');
+                copyToClipboard(text, 'Vibe', 'vibe-card', 'copy-vibe');
             } else {
                 showToast('No vibe format to copy');
             }
